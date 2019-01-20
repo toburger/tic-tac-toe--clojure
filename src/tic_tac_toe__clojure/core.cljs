@@ -15,10 +15,10 @@
 
 (defn move! [x y]
   (let [{:keys [board current-player]} @app-state]
-    (if (game-logic/can-update-board board x y)
+    (if (game-logic/can-update-cell board x y)
       (let [new-board (game-logic/update-board board x y current-player)
             winner (game-logic/get-winner new-board)
-            current-player (game-logic/swap-player current-player)]
+            current-player (game-logic/switch-player current-player)]
         (swap! app-state merge {:board new-board
                                 :current-player current-player
                                 :winner winner})))))
