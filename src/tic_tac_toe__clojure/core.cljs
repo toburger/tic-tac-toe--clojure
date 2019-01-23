@@ -1,41 +1,41 @@
 (ns tic-tac-toe--clojure.core
-    (:require [reagent.core :as reagent :refer [atom class-names]]
-              [tic-tac-toe--clojure.game-logic :as game-logic]))
+  (:require [reagent.core :as reagent :refer [atom class-names]]
+            [tic-tac-toe--clojure.game-logic :as game-logic]))
 
 (enable-console-print!)
 
 (def initial-state
-  {:board [[nil nil nil]
-           [nil nil nil]
-           [nil nil nil]]
+  {:board          [[nil nil nil]
+                    [nil nil nil]
+                    [nil nil nil]]
    :current-player :x
-   :winner nil})
+   :winner         nil})
 
 (defonce app-state (atom initial-state))
 
 (defn move! [x y]
   (let [{:keys [board current-player]} @app-state]
-    (if (game-logic/can-update-cell board x y)
-      (let [new-board (game-logic/update-board board x y current-player)
-            winner (game-logic/get-winner new-board)
+    (if (game-logic/can-update-cell? board x y)
+      (let [new-board      (game-logic/update-board board x y current-player)
+            winner         (game-logic/get-winner new-board)
             current-player (game-logic/switch-player current-player)]
-        (swap! app-state merge {:board new-board
+        (swap! app-state merge {:board          new-board
                                 :current-player current-player
-                                :winner winner})))))
+                                :winner         winner})))))
 
 (defn restart-game! []
   (reset! app-state initial-state))
 
 (defn player-x [{:keys [className]}]
   [:img
-   {:alt "PlayerX"
-    :src "https://toburger.github.io/tic-tac-toe/static/media/PlayerX.6a80d7b3.svg"
+   {:alt       "PlayerX"
+    :src       "https://toburger.github.io/tic-tac-toe/static/media/PlayerX.6a80d7b3.svg"
     :className (class-names "PlayerX" className)}])
 
 (defn player-o [{:keys [className]}]
   [:img
-   {:alt "PlayerO"
-    :src "https://toburger.github.io/tic-tac-toe/static/media/PlayerO.b936ed0a.svg"
+   {:alt       "PlayerO"
+    :src       "https://toburger.github.io/tic-tac-toe/static/media/PlayerO.b936ed0a.svg"
     :className (class-names "PlayerO" className)}])
 
 (defn no-player []
@@ -50,9 +50,9 @@
 
 (defn game-cell [x y cell]
   [:button
-   {:key (str x "-" y)
-    :disabled (some? cell)
-    :onClick (fn [] (move! x y))
+   {:key       (str x "-" y)
+    :disabled  (some? cell)
+    :onClick   (fn [] (move! x y))
     :className "Cell"}
    (case cell
      :x [player-x]
@@ -63,10 +63,10 @@
   [:div
    {:className "Board"}
    (map-indexed
-    (fn [idx row]
-      [:div {:key idx :className "Board__Row"}
-       (map-indexed (partial game-cell idx) row)])
-    board)])
+     (fn [idx row]
+       [:div {:key idx :className "Board__Row"}
+        (map-indexed (partial game-cell idx) row)])
+     board)])
 
 (defn game-current-player [current-player]
   [:div
@@ -88,9 +88,9 @@
    {:className "GameOver"}
    [:img
     {:className "GameOver__Image"
-     :onClick #(restart-game!)
-     :src restart-image
-     :alt "Restart"}]
+     :onClick   #(restart-game!)
+     :src       restart-image
+     :alt       "Restart"}]
    [:p
     {:className "GameOver__Text"}
     (case winner
@@ -110,8 +110,8 @@
 (reagent/render-component [app]
                           (. js/document (getElementById "app")))
 
-(defn on-js-reload []
-  ;; optionally touch your app-state to force rerendering depending on
-  ;; your application
-  ;; (swap! app-state update-in [:__figwheel_counter] inc)
-)
+(defn on-js-reload [])
+;; optionally touch your app-state to force rerendering depending on
+;; your application
+;; (swap! app-state update-in [:__figwheel_counter] inc)
+

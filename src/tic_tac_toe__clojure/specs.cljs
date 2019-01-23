@@ -28,61 +28,61 @@
                       ::winner]))
 
 (spec/fdef game-logic/switch-player
-  :args (spec/cat :player ::player)
-  :ret ::player
-  :fn #(not= (:ret %) (-> % :args :player)))
+           :args (spec/cat :player ::player)
+           :ret ::player
+           :fn #(not= (:ret %) (-> % :args :player)))
 
 (spec/fdef game-logic/update-board
-  :args (spec/cat :board ::board
-                  :x ::board-pos
-                  :y ::board-pos
-                  :value ::player)
-  :ret ::board)
+           :args (spec/cat :board ::board
+                           :x ::board-pos
+                           :y ::board-pos
+                           :value ::player)
+           :ret ::board)
 
 (spec/fdef game-logic/get-cell
-  :args (spec/cat :board ::board
-                  :x ::board-pos
-                  :y ::board-pos)
-  :ret ::cell)
+           :args (spec/cat :board ::board
+                           :x ::board-pos
+                           :y ::board-pos)
+           :ret ::cell)
 
-(spec/fdef game-logic/can-update-cell
-  :args (spec/cat :board ::board
-                  :x ::board-pos
-                  :y ::board-pos)
-  :ret boolean?)
+(spec/fdef game-logic/can-update-cell?
+           :args (spec/cat :board ::board
+                           :x ::board-pos
+                           :y ::board-pos)
+           :ret boolean?)
 
-(spec/fdef game-logic/check-rows-for-winner
-  :args (spec/cat :board ::board
-                  :player ::player)
-  :ret boolean?)
+(spec/fdef game-logic/winner-in-rows?
+           :args (spec/cat :board ::board
+                           :player ::player)
+           :ret boolean?)
 
-(spec/fdef game-logic/check-cols-for-winner
-  :args (spec/cat :board ::board
-                  :player ::player)
-  :ret boolean?)
+(spec/fdef game-logic/winner-in-cols?
+           :args (spec/cat :board ::board
+                           :player ::player)
+           :ret boolean?)
 
-(spec/fdef game-logic/check-diagonals-for-winner
-  :args (spec/cat :board ::board
-                  :player ::player)
-  :ret boolean?)
+(spec/fdef game-logic/winner-in-diagonals?
+           :args (spec/cat :board ::board
+                           :player ::player)
+           :ret boolean?)
 
-(spec/fdef game-logic/check-for-winner
-  :args (spec/cat :board ::board
-                  :player ::player)
-  :ret boolean?)
+(spec/fdef game-logic/winner?
+           :args (spec/cat :board ::board
+                           :player ::player)
+           :ret boolean?)
 
-(spec/fdef game-logic/check-for-draw
-  :args (spec/cat :board ::board)
-  :ret boolean?)
+(spec/fdef game-logic/draw?
+           :args (spec/cat :board ::board)
+           :ret boolean?)
 
 (spec/fdef game-logic/get-winner
-  :args (spec/cat :board ::board)
-  :ret ::winner)
+           :args (spec/cat :board ::board)
+           :ret ::winner)
 
 (comment
-  (spec/valid? ::game {:board [[nil nil nil] [nil :x nil] [nil nil :o]]
+  (spec/valid? ::game {:board          [[nil nil nil] [nil :x nil] [nil nil :o]]
                        :current-player :x
-                       :winner nil})
+                       :winner         nil})
 
   (gen/generate (spec/gen ::game))
 
@@ -92,17 +92,17 @@
 
   (stest/check `game-logic/get-cell)
 
-  (stest/check `game-logic/can-update-cell)
+  (stest/check `game-logic/can-update-cell?)
 
-  (stest/check `game-logic/check-rows-for-winner)
+  (stest/check `game-logic/winner-in-rows?)
 
-  (stest/check `game-logic/check-cols-for-winner)
+  (stest/check `game-logic/winner-in-cols?)
 
-  (stest/check `game-logic/check-diagonals-for-winner)
+  (stest/check `game-logic/winner-in-diagonals?)
 
-  (stest/check `game-logic/check-for-winner)
+  (stest/check `game-logic/winner?)
 
-  (stest/check `game-logic/check-for-draw)
+  (stest/check `game-logic/draw?)
 
   (stest/check `game-logic/get-winner))
 ;

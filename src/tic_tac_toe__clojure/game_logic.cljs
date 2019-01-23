@@ -18,26 +18,24 @@
   [board x y]
   (get-in board [x y]))
 
-(defn can-update-cell
+(defn can-update-cell?
   "Checks if a cell value can be updated.
   (simply checks if the `board` contains nil)"
   [board x y]
   (nil? (get-cell board x y)))
 
-(defn- check [row v] (every? (partial = v) row))
+(defn- check? [v row] (every? (partial = v) row))
 
-(defn check-rows-for-winner
+(defn winner-in-rows?
   "Checks if all elements a row contain the same value `v`.
   Checks all three rows."
   [board v]
-  (or (check (nth board 0) v)
-      (check (nth board 1) v)
-      (check (nth board 2) v)))
+  (every? false? (map (partial check? v) board)))
 
 (defn- transpose [m]
   (apply mapv vector m))
 
-(defn check-cols-for-winner
+(defn winner-in-cols?
   "Checks if all elements of a column contain the same value `v`.
   Checks all three columns.
 
@@ -45,30 +43,32 @@
   gets rotated and the columns become rows. Then the rows can be passed
   to checkRowsForWinner"
   [board v]
-  (check-rows-for-winner (transpose board) v))
+  (winner-in-rows? (transpose board) v))
 
-(defn check-diagonals-for-winner
+(defn winner-in-diagonals?
   "Checks if all elements of a diagonal contain the same value `v`.
   Checks the two diagonals."
   [board v]
-  (let [get #(get-in board %)
-        diag1 [(get [0 0]) (get [1 1]) (get [2 2])]
-        diag2 [(get [2 0]) (get [1 1]) (get [0 2])]]
-    (or (check diag1 v)
-        (check diag2 v))))
+  (let [get       (partial get-in board)
+        diagonals [[[0 0] [1 1] [2 2]]
+                   [[2 0] [1 1] [0 2]]]]
+    (->> diagonals
+         (map (comp (partial check? v)
+                    (partial map get)))
+         (every? false?))))
 
-(defn check-for-winner
+(defn winner?
   "Checks if any one of the
   * rows
   * columns
   * diagonals
   of the `board` contain the same value `v`."
   [board v]
-  (or (check-rows-for-winner board v)
-      (check-cols-for-winner board v)
-      (check-diagonals-for-winner board v)))
+  (or (winner-in-rows? board v)
+      (winner-in-cols? board v)
+      (winner-in-diagonals? board v)))
 
-(defn check-for-draw
+(defn draw?
   "Checks if the game is a draw
   It does check if all of the boards aren't nil."
   [board]
@@ -79,11 +79,11 @@
   If null is returned the game continues."
   [board]
   (cond
-    (check-for-winner board :x)
+    (winner? board :x)
     :x
-    (check-for-winner board :o)
+    (winner? board :o)
     :o
-    (check-for-draw board)
+    (draw? board)
     :draw
     :else
     nil))
@@ -95,17 +95,17 @@
 
   (update-board board 1 1 :x)
 
-  (can-update-cell board 0 0)
-  (can-update-cell board 0 1)
+  (can-update-cell? board 0 0)
+  (can-update-cell? board 0 1)
 
-  (check-rows-for-winner board :x)
-  (check-cols-for-winner board :x)
+  (winner-in-rows? board :x)
+  (winner-in-cols? board :x)
 
-  (check-for-winner board :x)
-  (check-for-winner board :o)
+  (winner? board :x)
+  (winner? board :o)
 
-  (check-for-draw board)
-  (check-for-draw [[nil nil nil] [nil nil nil] [nil nil nil]])
+  (draw? board)
+  (draw? [[nil nil nil] [nil nil nil] [nil nil nil]])
 
   (get-winner board)
   (get-winner [[nil nil :o] [nil nil nil] [nil nil nil]])
