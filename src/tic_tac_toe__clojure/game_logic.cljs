@@ -109,5 +109,4 @@
 
   (get-winner board)
   (get-winner [[nil nil :o] [nil nil nil] [nil nil nil]])
-  (get-winner [[nil nil nil] [nil nil nil] [nil nil nil]])
-  )
+  (get-winner [[nil nil nil] [nil nil nil] [nil nil nil]]))
