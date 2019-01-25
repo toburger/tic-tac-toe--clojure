@@ -30,7 +30,7 @@
   "Checks if all elements a row contain the same value `v`.
   Checks all three rows."
   [board v]
-  (every? false? (map (partial check? v) board)))
+  (not (every? false? (map (partial check? v) board))))
 
 (defn- transpose [m]
   (apply mapv vector m))
@@ -55,7 +55,8 @@
     (->> diagonals
          (map (comp (partial check? v)
                     (partial map get)))
-         (every? false?))))
+         (every? false?)
+         not)))
 
 (defn winner?
   "Checks if any one of the
