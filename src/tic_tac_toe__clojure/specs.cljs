@@ -80,7 +80,9 @@
            :ret ::winner)
 
 (comment
-  (spec/valid? ::game {:board          [[nil nil nil] [nil :x nil] [nil nil :o]]
+  (spec/valid? ::game {:board          [[nil nil nil]
+                                        [nil :x nil]
+                                        [nil nil :o]]
                        :current-player :x
                        :winner         nil})
 
