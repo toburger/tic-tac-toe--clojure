@@ -13,6 +13,15 @@
 
 (defonce app-state (r/atom initial-state))
 
+(defonce board-cursor
+  (r/cursor app-state [:board]))
+
+(defonce current-player-cursor
+  (r/cursor app-state [:current-player]))
+
+(defonce winner-cursor
+  (r/cursor app-state [:winner]))
+
 (defn move! [x y]
   (let [{:keys [board current-player]} @app-state]
     (if (game-logic/can-update-cell? board x y)
@@ -100,11 +109,9 @@
 
 (defn app []
   [:div.App
-   (if-let [winner (:winner @app-state)]
+   (if-let [winner @winner-cursor]
      [game-over winner]
-     [game-field
-      (r/cursor app-state [:board])
-      (r/cursor app-state [:current-player])])])
+     [game-field board-cursor current-player-cursor])])
 
 (r/render-component [app]
                     (. js/document (getElementById "app")))
