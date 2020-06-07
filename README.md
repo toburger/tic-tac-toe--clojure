@@ -1,5 +1,8 @@
 # tic-tac-toe--clojure
 
+* Install [Leiningen](https://leiningen.org/)
+* `lein figwheel`
+
 ### Implementation examples (in order of their creation, no rating)
 
 * [JavaScript & React](https://github.com/toburger/tic-tac-toe)
