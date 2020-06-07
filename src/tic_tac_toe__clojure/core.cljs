@@ -1,5 +1,6 @@
 (ns tic-tac-toe--clojure.core
   (:require [reagent.core :as r]
+            [reagent.dom :refer [render]]
             [tic-tac-toe--clojure.game-logic :as game-logic]))
 
 (enable-console-print!)
@@ -113,8 +114,8 @@
      [game-over winner]
      [game-field board-cursor current-player-cursor])])
 
-(r/render-component [app]
-                    (. js/document (getElementById "app")))
+(render [app]
+        (. js/document (getElementById "app")))
 
 (defn on-js-reload [])
 ;; optionally touch your app-state to force rerendering depending on
