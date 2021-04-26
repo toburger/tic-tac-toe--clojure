@@ -2,7 +2,7 @@
   (:require [clojure.spec.alpha :as spec]
             [clojure.spec.gen.alpha :as gen]
             [clojure.spec.test.alpha :as stest]
-            [tic-tac-toe--clojure.game-logic :as game-logic]))
+            [app.game-logic :as game-logic]))
 
 (spec/def ::player #{:x :o})
 
