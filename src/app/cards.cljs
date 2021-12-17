@@ -3,6 +3,7 @@
   both 'yarn cards' and 'yarn test'."
   (:require [cljsjs.react]
             [cljsjs.react.dom]
+            [cljsjs.marked]
             ; devcards needs cljsjs.react and cljsjs.react.dom to be imported
             ; separately for shadow-cljs to add shims.
             [devcards.core :refer [start-devcard-ui!]]
