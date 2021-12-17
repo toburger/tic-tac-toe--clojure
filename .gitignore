@@ -1,6 +1,7 @@
 node_modules
 public/js
 out
+.lsp
 .shadow-cljs
 .nrepl-port
 .clj-kondo/.cache
