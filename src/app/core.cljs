@@ -1,5 +1,6 @@
 (ns app.core
   (:require [reagent.core :as r]
+            [reagent.dom :as rd]
             [app.game-logic :as game-logic]))
 
 (enable-console-print!)
@@ -119,7 +120,7 @@
 ;; (swap! app-state update-in [:__figwheel_counter] inc)
 
 (defn ^:dev/after-load render []
-  (r/render [:div.Content [app]] (.getElementById js/document "app")))
+  (rd/render [:div.Content [app]] (.getElementById js/document "app")))
 
 (defn ^:export main
   "Run application startup logic."
