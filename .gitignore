@@ -8,3 +8,7 @@ out
 yarn-error.log
 report.html
 .calva/
+.DS_Store
+.portal/
+.vscode/
+.rebel_readline_history
